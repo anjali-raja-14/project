@@ -1,0 +1,140 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Remedy for Your Health Issue</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(to right, #141e30, #243b55);
+            margin: 0;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #f8f9fa;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            outline: none;
+            resize: none;
+        }
+
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        button {
+            margin-top: 12px;
+            padding: 12px 20px;
+            border: none;
+            background: #28a745;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .submitted-remedy {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            display: none;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Home Remedy for Your Health Issue</h3>
+        <div class="card">
+            <textarea id="remedy" placeholder="Describe your symptoms..."></textarea>
+            <button onclick="submitRemedy()">Get Remedy</button>
+            <div id="submittedRemedy" class="submitted-remedy"></div>
+        </div>
+    </div>
+
+    <script>
+        async function submitRemedy() {
+            const remedyText = document.getElementById("remedy").value.trim();
+            const submittedRemedyBox = document.getElementById("submittedRemedy");
+
+            if (remedyText === "") {
+                alert("Please enter your symptoms before submitting.");
+                return;
+            }
+
+            submittedRemedyBox.innerText = "Fetching remedy...";
+            submittedRemedyBox.style.display = "block";
+
+            try {
+                const response = await fetch("https://api.openai.com/v1/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer YOUR_OPENAI_API_KEY"
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-4",
+                        prompt: `Provide a home remedy for: ${remedyText}`,
+                        max_tokens: 100
+                    })
+                });
+
+                const data = await response.json();
+                submittedRemedyBox.innerText = data.choices[0].text.trim();
+            } catch (error) {
+                submittedRemedyBox.innerText = "Error fetching remedy. Please try again.";
+            }
+        }
+    </script>
+</body>
+</html>
