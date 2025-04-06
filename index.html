@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content=ss"width=device-width, initial-scale=1.0">
+    <title>Personalized Home Remedy</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(to right, #141e30, #243b55);
+            margin: 0;
+            color: white;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-size: 16px;
+            margin-top: 10px;
+            text-align: left;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: #28a745;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+        .remedy {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-size: 18px;
+            text-align: left;
+            display: none;
+        }
+        .remedy h3 {
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🌿 Your Personalized Home Remedy 🌿</h2>
+        
+        <form id="remedyForm">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" placeholder="Enter your name" required>
+
+            <label for="symptoms">What health issue are you facing?</label>
+            <textarea id="symptoms" placeholder="Describe your symptoms..." required></textarea>
+
+            <label for="preference">Remedy Preference:</label>
+            <select id="preference" required>
+                <option value="">Select</option>
+                <option>Herbal</option>
+                <option>Ayurvedic</option>
+                <option>Kitchen-Based</option>
+            </select>
+
+            <button type="submit">🔍 Get My Remedy</button>
+        </form>
+
+        <div class="remedy" id="remedySection">
+            <h3>🌟 Your Remedy, <span id="userName"></span>! 🌟</h3>
+            <p id="remedyText"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("remedyForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const symptoms = document.getElementById("symptoms").value.toLowerCase();
+            const preference = document.getElementById("preference").value;
+
+            if (!name) {
+                alert("Please enter your name.");
+                return;
+            }
+
+            let remedy = "Please consult a healthcare professional for a proper diagnosis.";
+
+            if (symptoms.includes("cough") || symptoms.includes("cold")) {
+                remedy = preference === "Herbal" ? "Drink warm turmeric milk. 🌿"
+                      : preference === "Ayurvedic" ? "Try Tulsi and honey infusion. 🍯"
+                      : "Gargle with warm salt water and drink ginger tea. ☕";
+            } 
+            else if (symptoms.includes("indigestion") || symptoms.includes("bloating")) {
+                remedy = preference === "Herbal" ? "Drink peppermint tea. 🍵"
+                      : preference === "Ayurvedic" ? "Take Triphala powder before bed. 🌿"
+                      : "Eat cumin seeds with warm water. 🌰";
+            } 
+            else if (symptoms.includes("headache") || symptoms.includes("migraine")) {
+                remedy = preference === "Herbal" ? "Apply peppermint oil. 🌱"
+                      : preference === "Ayurvedic" ? "Massage with Brahmi oil. 💆"
+                      : "Drink ginger tea with lemon. 🍋";
+            } 
+            else if (symptoms.includes("skin allergy") || symptoms.includes("rash")) {
+                remedy = preference === "Herbal" ? "Apply aloe vera gel. 🌿"
+                      : preference === "Ayurvedic" ? "Use neem paste. 🍃"
+                      : "Mix honey and cinnamon on skin. 🍯";
+            } 
+            else if (symptoms.includes("stress") || symptoms.includes("anxiety")) {
+                remedy = preference === "Herbal" ? "Drink chamomile tea. 🌼"
+                      : preference === "Ayurvedic" ? "Try Ashwagandha. 🧘"
+                      : "Listen to calming music. 🎶";
+            }
+
+            document.getElementById("userName").innerText = name;
+            document.getElementById("remedyText").innerText = remedy;
+            document.getElementById("remedySection").style.display = "block";
+        });
+    </script>
+</body>
+</html>
